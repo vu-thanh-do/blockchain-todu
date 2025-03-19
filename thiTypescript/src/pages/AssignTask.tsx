@@ -44,7 +44,7 @@ const AssignTask: React.FC = () => {
 
   // Lấy taskId từ query parameter
   const taskId = new URLSearchParams(location.search).get('id');
-  console.log(taskId,'taskId');
+  console.log(taskId, 'taskId');
   useEffect(() => {
     if (taskId) {
       findTask(taskId);
@@ -54,7 +54,7 @@ const AssignTask: React.FC = () => {
 
   // Tìm task từ danh sách tasks
   const findTask = (id: string) => {
-      const task = tasks.find(t => t._id === id);
+    const task = tasks.find(t => t._id === id);
     if (task) {
       setCurrentTask(task);
     }
@@ -84,7 +84,7 @@ const AssignTask: React.FC = () => {
       }, 2000);
     } catch (error) {
       console.error('Lỗi phân công task:', error);
-      message.error('Không thể phân công nhiệm vụ!');
+      console.error('Không thể phân công nhiệm vụ!');
     } finally {
       setSubmitting(false);
     }
@@ -139,7 +139,7 @@ const AssignTask: React.FC = () => {
   // Lấy tên người dùng từ địa chỉ
   const getUsernameFromAddress = (address: string) => {
     if (!address) return 'Không xác định';
-    
+
     const user = users.find(u => u.walletAddress === address);
     return user ? user.username : address.substring(0, 6) + '...' + address.substring(address.length - 4);
   };

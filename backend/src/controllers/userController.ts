@@ -59,7 +59,7 @@ export const getUserById = async (req: Request, res: Response) :Promise<any> => 
 // @access  Private/Admin
 export const createUser = async (req: Request, res: Response) :Promise<any> => {
   try {
-    const { username, role = 'employee' } = req.body;
+    const { username, walletAddress, role = 'employee' } = req.body;
 
     if (!username) {
       return res.status(400).json({
@@ -73,7 +73,7 @@ export const createUser = async (req: Request, res: Response) :Promise<any> => {
 
     // Tạo người dùng trong DB
     const user = new User({
-      walletAddress: wallet.address,
+      walletAddress,
       username,
       privateKey: wallet.privateKey,
       role
@@ -103,7 +103,7 @@ export const createUser = async (req: Request, res: Response) :Promise<any> => {
       success: true,
       data: {
         _id: user._id,
-        walletAddress: wallet.address,
+        walletAddress,
         privateKey: wallet.privateKey, // Trả về private key chỉ một lần
         username: user.username,
         role: user.role

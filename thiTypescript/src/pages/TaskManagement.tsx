@@ -77,7 +77,7 @@ const TaskManagement: React.FC = () => {
   const handleCreateTask = async (values: any) => {
     try {
       await createTask(
-        values.title, 
+        values.title,
         values.description,
         values.priority,
         values.dueDate ? values.dueDate.format('YYYY-MM-DD') : undefined
@@ -108,7 +108,7 @@ const TaskManagement: React.FC = () => {
   const handleUpdateTask = async (values: any) => {
     try {
       if (!currentTask) return;
-      
+
       setProcessingTaskId(currentTask._id);
 
       // Cập nhật thông tin task
@@ -128,8 +128,7 @@ const TaskManagement: React.FC = () => {
       setEditModalVisible(false);
       message.success('Cập nhật nhiệm vụ thành công!');
     } catch (error) {
-      console.error('Lỗi cập nhật task:', error);
-      message.error('Không thể cập nhật nhiệm vụ: ' + (error as Error).message);
+
     } finally {
       setProcessingTaskId(null);
     }
@@ -253,7 +252,7 @@ const TaskManagement: React.FC = () => {
       key: 'action',
       render: (text: string, record: Task) => {
 
-        console.log(record,'record');
+        console.log(record, 'record');
         return (
           <Space size="small">
             {processingTaskId === record._id ? (
@@ -261,52 +260,52 @@ const TaskManagement: React.FC = () => {
             ) : (
               <>
                 <Tooltip title="Xem chi tiết">
-                  <Button 
-                    icon={<EyeOutlined />} 
-                    size="small" 
-                    onClick={() => handleViewTaskDetails(record._id)} 
+                  <Button
+                    icon={<EyeOutlined />}
+                    size="small"
+                    onClick={() => handleViewTaskDetails(record._id)}
                   />
                 </Tooltip>
-                
+
                 {(userRole === 'admin' || userRole === 'teamLead' || record.createdBy === localStorage.getItem('walletAddress')) && (
                   <Tooltip title="Chỉnh sửa">
-                    <Button 
-                      icon={<EditOutlined />} 
-                      size="small" 
-                      onClick={() => handleEditTask(record)} 
+                    <Button
+                      icon={<EditOutlined />}
+                      size="small"
+                      onClick={() => handleEditTask(record)}
                     />
                   </Tooltip>
                 )}
-  
+
                 {(userRole === 'admin' || userRole === 'teamLead') && record.status === 'created' && (
                   <Tooltip title="Phân công">
-                    <Button 
-                      type="primary" 
-                      size="small" 
+                    <Button
+                      type="primary"
+                      size="small"
                       onClick={() => handleAssignTask(record._id)}
                     >
                       Phân công
                     </Button>
                   </Tooltip>
                 )}
-  
+
                 {record.status === 'assigned' && record.assignee === localStorage.getItem('walletAddress') && (
                   <Tooltip title="Bắt đầu làm việc">
-                    <Button 
-                      type="primary" 
-                      size="small" 
+                    <Button
+                      type="primary"
+                      size="small"
                       onClick={() => handleToggleStatus(record._id, 'in_progress')}
                     >
                       Bắt đầu
                     </Button>
                   </Tooltip>
                 )}
-  
+
                 {record.status === 'in_progress' && record.assignee === localStorage.getItem('walletAddress') && (
                   <Tooltip title="Đánh dấu hoàn thành">
-                    <Button 
-                      type="primary" 
-                      size="small" 
+                    <Button
+                      type="primary"
+                      size="small"
                       onClick={() => handleToggleStatus(record._id, 'completed')}
                       style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
                     >
@@ -325,7 +324,7 @@ const TaskManagement: React.FC = () => {
   return (
     <div>
       <Title level={2}>Quản lý công việc</Title>
-      
+
       <Card style={{ marginBottom: 16 }}>
         <Row gutter={16}>
           <Col xs={24} sm={12} md={8} lg={6}>

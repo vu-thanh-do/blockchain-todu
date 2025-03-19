@@ -54,13 +54,16 @@ export const loginWithMetaMask = async (address: string) => {
   return response.data;
 };
 
-export const register = async (username: string, role: string = 'employee', walletAddress?: string) => {
-  const data: any = { username, role };
-  if (walletAddress) {
-    data.walletAddress = walletAddress;
-  }
-  const response = await api.post('/auth/register', data);
-  return response.data;
+export const register = async (data: {
+    username: string;
+    role: string;
+    walletAddress: string;
+    privateKey?: string;
+    txHash?: string;
+    metadata?: string;
+}) => {
+    const response = await api.post('/auth/register', data);
+    return response.data;
 };
 
 export const getCurrentUser = async () => {

@@ -6,361 +6,361 @@ import * as ApiService from '../services/ApiService';
 // ABI của Smart Contract (giả định)
 // Bạn sẽ cần thay thế bằng ABI thực của smart contract
 const contractABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_taskId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "_assignedTo",
-				"type": "address"
-			}
-		],
-		"name": "assignTask",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_title",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_ipfsHash",
-				"type": "string"
-			}
-		],
-		"name": "createTask",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_userAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "enum TaskManagement.Role",
-				"name": "_role",
-				"type": "uint8"
-			}
-		],
-		"name": "createUser",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "assignedTo",
-				"type": "address"
-			}
-		],
-		"name": "TaskAssigned",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "createdBy",
-				"type": "address"
-			}
-		],
-		"name": "TaskCreated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum TaskManagement.TaskStatus",
-				"name": "status",
-				"type": "uint8"
-			}
-		],
-		"name": "TaskStatusChanged",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_taskId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "enum TaskManagement.TaskStatus",
-				"name": "_status",
-				"type": "uint8"
-			}
-		],
-		"name": "updateTaskStatus",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "userAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum TaskManagement.Role",
-				"name": "role",
-				"type": "uint8"
-			}
-		],
-		"name": "UserCreated",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "getTasksCount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_userAddress",
-				"type": "address"
-			}
-		],
-		"name": "getUserRole",
-		"outputs": [
-			{
-				"internalType": "enum TaskManagement.Role",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getUsersCount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "taskCount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "tasks",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "title",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "ipfsHash",
-				"type": "string"
-			},
-			{
-				"internalType": "address",
-				"name": "assignedTo",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "createdBy",
-				"type": "address"
-			},
-			{
-				"internalType": "enum TaskManagement.TaskStatus",
-				"name": "status",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "createdAt",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "updatedAt",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "userAddresses",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "users",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "userAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "enum TaskManagement.Role",
-				"name": "role",
-				"type": "uint8"
-			},
-			{
-				"internalType": "bool",
-				"name": "isActive",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_taskId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_assignedTo",
+                "type": "address"
+            }
+        ],
+        "name": "assignTask",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_title",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_description",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_ipfsHash",
+                "type": "string"
+            }
+        ],
+        "name": "createTask",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_userAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "enum TaskManagement.Role",
+                "name": "_role",
+                "type": "uint8"
+            }
+        ],
+        "name": "createUser",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "assignedTo",
+                "type": "address"
+            }
+        ],
+        "name": "TaskAssigned",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "title",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "createdBy",
+                "type": "address"
+            }
+        ],
+        "name": "TaskCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum TaskManagement.TaskStatus",
+                "name": "status",
+                "type": "uint8"
+            }
+        ],
+        "name": "TaskStatusChanged",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_taskId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "enum TaskManagement.TaskStatus",
+                "name": "_status",
+                "type": "uint8"
+            }
+        ],
+        "name": "updateTaskStatus",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "userAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum TaskManagement.Role",
+                "name": "role",
+                "type": "uint8"
+            }
+        ],
+        "name": "UserCreated",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "getTasksCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_userAddress",
+                "type": "address"
+            }
+        ],
+        "name": "getUserRole",
+        "outputs": [
+            {
+                "internalType": "enum TaskManagement.Role",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getUsersCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "taskCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "tasks",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "title",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "description",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "ipfsHash",
+                "type": "string"
+            },
+            {
+                "internalType": "address",
+                "name": "assignedTo",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "createdBy",
+                "type": "address"
+            },
+            {
+                "internalType": "enum TaskManagement.TaskStatus",
+                "name": "status",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "createdAt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updatedAt",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "userAddresses",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "users",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "userAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "internalType": "enum TaskManagement.Role",
+                "name": "role",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bool",
+                "name": "isActive",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
 ]
 
 // Địa chỉ của Smart Contract (sẽ cần thay thế bằng địa chỉ thực)
-const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138"; 
+const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
 
 // Interface cho User đã được chuyển đổi
 export interface User {
@@ -404,7 +404,7 @@ interface BlockchainContextType {
     fetchUsers: () => Promise<void>;
     deleteUser: (userId: string) => Promise<void>;
     fetchTasks: () => Promise<void>;
-    createUser: (username: string, role: string) => Promise<User>;
+    createUser: (username: string, role: string, walletAddress: string) => Promise<User>;
     createTask: (title: string, description: string, priority?: string, dueDate?: string, ipfsHash?: string) => Promise<Task>;
     assignTask: (taskId: string, assigneeAddress: string) => Promise<Task>;
     updateTaskStatus: (taskId: string, status: string) => Promise<Task>;
@@ -413,6 +413,7 @@ interface BlockchainContextType {
     handleAccountsChanged: (accounts: string[]) => void;
     handleChainChanged: (chainId: string) => void;
     logout: () => void;
+    archiveTask: (taskId: string) => Promise<void>;
 }
 
 // Tạo context
@@ -449,7 +450,7 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     // Kiểm tra trạng thái đăng nhập khi component mount
     useEffect(() => {
         checkLoginStatus();
-        
+
         // Đăng ký lắng nghe sự kiện thay đổi tài khoản trên MetaMask
         if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
             window.ethereum.on('accountsChanged', (accounts: string[]) => {
@@ -485,19 +486,19 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
                     setWalletAddress(userData.data.walletAddress);
                     setUserRole(userData.data.role);
                     setIsConnected(true);
-                    
+
                     // Khởi tạo provider và signer nếu có MetaMask
                     if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
                         const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
                         setProvider(web3Provider);
                         const web3Signer = web3Provider.getSigner();
                         setSigner(web3Signer);
-                        
+
                         // Khởi tạo contract
                         const taskContract = new ethers.Contract(contractAddress, contractABI, web3Signer);
                         setContract(taskContract);
                     }
-                    
+
                     // Tải dữ liệu ban đầu
                     await fetchUsers();
                     await fetchTasks();
@@ -520,30 +521,63 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const createWallet = async (username: string, role: string = 'employee') => {
         try {
             setLoading(true);
-            
-            // Tạo wallet mới bằng ethers
+
+            // Kiểm tra kết nối MetaMask
+            if (!isConnected || !contract || !signer) {
+                throw new Error('Chưa kết nối với MetaMask');
+            }
+
+            // Xác thực quyền (chỉ admin mới được tạo user)
+            if (userRole !== 'admin') {
+                throw new Error('Bạn không có quyền thực hiện hành động này');
+            }
+
+            // Tạo ví mới bằng ethers
             const wallet = ethers.Wallet.createRandom();
-            const walletAddress = wallet.address;
-            const privateKey = wallet.privateKey;
-            
-            const result = await ApiService.register(username, role, walletAddress);
-            
-            if (result.success) {                
-                // KHÔNG lưu token và thông tin người dùng để tránh tự động đăng nhập
-                // Chỉ trả về kết quả thành công
-                message.success('Đã tạo ví mới thành công!');
-                
-                // Nếu là admin đang thêm user, cập nhật danh sách user
-                if (isConnected && userRole === 'admin') {
-                    await fetchUsers();
+            const newAddress = wallet.address;
+            const newPrivateKey = wallet.privateKey;
+
+            // Chuyển đổi role sang enum cho smart contract
+            const roleEnum = {
+                'admin': 2,
+                'teamLead': 1,
+                'employee': 0
+            }[role] || 0;
+
+            try {
+                // Gọi hàm createUser trên smart contract
+                const tx = await contract.createUser(newAddress, username, roleEnum);
+                const receipt = await tx.wait();
+
+                // Kiểm tra receipt thay vì event
+                if (!receipt.status) {
+                    throw new Error('Transaction failed');
                 }
-                
-                return { address: walletAddress, privateKey };
-            } else {
-                throw new Error(result.message || 'Lỗi khi tạo ví');
+
+                const result = await ApiService.register({
+                    username,
+                    role,
+                    walletAddress: newAddress,
+                    privateKey: newPrivateKey,
+                    txHash: receipt.transactionHash
+                });
+
+                if (result.success) {
+                    message.success('Đã tạo ví mới thành công!');
+                    if (isConnected && userRole === 'admin') {
+                        await fetchUsers();
+                    }
+                    return {
+                        address: newAddress,
+                        privateKey: newPrivateKey,
+                        txHash: receipt.transactionHash
+                    };
+                }
+            } catch (err) {
+                console.error('Lỗi blockchain transaction:', err);
+                throw new Error('Lỗi khi tạo user trên blockchain: ' + err.message);
             }
         } catch (error) {
-            setLoading(false);
             console.error('Error creating wallet:', error);
             message.error('Lỗi tạo ví: ' + (error as Error).message);
             throw error;
@@ -556,17 +590,17 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const connectWallet = async (privateKey?: string) => {
         try {
             setLoading(true);
-            
+
             if (privateKey) {
                 // Đăng nhập bằng private key
                 const wallet = new ethers.Wallet(privateKey);
                 const walletAddress = wallet.address;
-                
+
                 const result = await ApiService.login(privateKey);
-                
+
                 if (result.success) {
                     const { walletAddress, role, token } = result.data;
-                    
+
                     // Lưu token và thông tin người dùng
                     localStorage.setItem('token', token);
                     localStorage.setItem('walletAddress', walletAddress);
@@ -574,14 +608,14 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
                     setWalletAddress(walletAddress);
                     setUserRole(role);
                     setIsConnected(true);
-                    
+
                     // Khởi tạo provider nếu có MetaMask
                     if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
                         const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
                         setProvider(web3Provider);
                         const web3Signer = web3Provider.getSigner();
                         setSigner(web3Signer);
-                        
+
                         // Khởi tạo contract
                         const taskContract = new ethers.Contract(contractAddress, contractABI, web3Signer);
                         setContract(taskContract);
@@ -592,19 +626,19 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
                         );
                         // Sử dụng Web3Provider | null nên cần ép kiểu
                         setProvider(fallbackProvider as unknown as ethers.providers.Web3Provider);
-                        
+
                         const wallet = new ethers.Wallet(privateKey, fallbackProvider);
                         setSigner(wallet);
-                        
+
                         // Khởi tạo contract
                         const taskContract = new ethers.Contract(contractAddress, contractABI, wallet);
                         setContract(taskContract);
                     }
-                    
+
                     // Tải dữ liệu ban đầu
                     await fetchUsers();
                     await fetchTasks();
-                    
+
                     message.success('Đăng nhập thành công!');
                 } else {
                     throw new Error(result.message || 'Đăng nhập thất bại');
@@ -624,39 +658,39 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const connectWithMetaMask = async () => {
         try {
             setLoading(true);
-            
+
             // Kiểm tra xem window.ethereum có tồn tại không
             if (typeof window === 'undefined' || typeof window.ethereum === 'undefined') {
                 throw new Error('MetaMask chưa được cài đặt. Vui lòng cài đặt extension MetaMask.');
             }
-            
+
             // Tạo Web3Provider từ window.ethereum
             const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
             setProvider(web3Provider);
-            
+
             // Yêu cầu quyền truy cập tài khoản
             await web3Provider.send("eth_requestAccounts", []);
             const web3Signer = web3Provider.getSigner();
             setSigner(web3Signer);
-            
+
             // Lấy địa chỉ tài khoản
             const address = await web3Signer.getAddress();
-            
+
             if (!address) {
                 throw new Error('Không tìm thấy tài khoản MetaMask hoặc quyền truy cập bị từ chối.');
             }
-            
+
             // Khởi tạo contract
             const taskContract = new ethers.Contract(contractAddress, contractABI, web3Signer);
             setContract(taskContract);
-            
+
             try {
                 // Gọi API để đăng nhập bằng địa chỉ MetaMask
                 const result = await ApiService.loginWithMetaMask(address);
-                
+
                 if (result.success) {
                     const { walletAddress, role, token } = result.data;
-                    
+
                     // Lưu token và thông tin người dùng
                     localStorage.setItem('token', token);
                     localStorage.setItem('walletAddress', walletAddress);
@@ -664,18 +698,18 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
                     setWalletAddress(walletAddress);
                     setUserRole(role);
                     setIsConnected(true);
-                    
+
                     // Tải dữ liệu ban đầu
                     await fetchUsers();
                     await fetchTasks();
-                    
+
                     message.success('Đăng nhập bằng MetaMask thành công!');
                 } else {
                     throw new Error(result.message || 'Đăng nhập thất bại');
                 }
             } catch (apiError) {
                 console.error('API error during MetaMask authentication:', apiError);
-                
+
                 // Nếu tài khoản chưa đăng ký, thông báo cho người dùng
                 message.warning('Địa chỉ ví MetaMask chưa được đăng ký trong hệ thống. Vui lòng đăng ký trước.');
                 setIsConnected(false);
@@ -703,7 +737,7 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const fetchUsers = async () => {
         try {
             if (!isConnected) return;
-            
+
             const result = await ApiService.getUsers();
             if (result.success) {
                 setUsers(result.data);
@@ -723,7 +757,7 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const deleteUser = async (userId: string) => {
         try {
             if (!isConnected) return;
-            
+
             const result = await ApiService.deleteUser(userId);
             if (result.success) {
                 message.success('Xóa người dùng thành công!');
@@ -742,7 +776,7 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const fetchTasks = async () => {
         try {
             if (!isConnected) return;
-            
+
             const result = await ApiService.getTasks();
             if (result.success) {
                 setTasks(result.data);
@@ -754,46 +788,45 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     };
 
     // Tạo người dùng mới - Sử dụng blockchain
-    const createUser = async (username: string, role: string) => {
+    const createUser = async (username: string, role: string, walletAddress: string) => {
         try {
             setLoading(true);
-            
-            // Kiểm tra kết nối
+
+            // Kiểm tra kết nối MetaMask
             if (!isConnected || !contract || !signer) {
-                throw new Error('Chưa kết nối với blockchain');
+                throw new Error('Chưa kết nối với MetaMask');
             }
-            
+
             // Xác thực quyền (chỉ admin mới được tạo user)
             if (userRole !== 'admin') {
                 throw new Error('Bạn không có quyền thực hiện hành động này');
             }
-            
-            // Tạo ví mới
-            const wallet = ethers.Wallet.createRandom();
-            const newAddress = wallet.address;
-            const newPrivateKey = wallet.privateKey;
-            
-            // Tạo metadata cho transaction
-            const metadata = {
-                action: 'create_user',
+
+            // Kiểm tra địa chỉ ví hợp lệ
+            if (!ethers.utils.isAddress(walletAddress)) {
+                throw new Error('Địa chỉ ví không hợp lệ');
+            }
+
+            // Chuyển đổi role sang enum
+            const roleEnum = role === 'admin' ? 2 : role === 'teamLead' ? 1 : 0;
+
+            // Gọi smart contract để tạo user
+            const tx = await contract.createUser(walletAddress, username, roleEnum);
+            const receipt = await tx.wait();
+
+            // Kiểm tra receipt
+            if (!receipt.status) {
+                throw new Error('Transaction failed');
+            }
+
+            // Gọi API để lưu thông tin user
+            const result = await ApiService.createUser({
                 username,
                 role,
-                walletAddress: newAddress
-            };
-            
-            // Gọi hàm trên smart contract để tạo người dùng (giả định)
-            // const tx = await contract.createUser(newAddress, role, JSON.stringify(metadata));
-            // await tx.wait();
-            
-            // Gọi API để tạo người dùng
-            const result = await ApiService.createUser({ 
-                username, 
-                role, 
-                walletAddress: newAddress,
-                privateKey: newPrivateKey
-                // txHash: tx.hash // Thêm hash của transaction 
+                walletAddress,
+                txHash: receipt.transactionHash
             });
-            
+
             if (result.success) {
                 message.success('Tạo người dùng thành công!');
                 await fetchUsers();
@@ -814,12 +847,12 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const createTask = async (title: string, description: string, priority?: string, dueDate?: string, ipfsHash?: string) => {
         try {
             setLoading(true);
-            
+
             // Kiểm tra kết nối MetaMask
             if (!isConnected || !contract || !signer) {
                 throw new Error('Chưa kết nối với MetaMask');
             }
-            
+
             // Tạo metadata cho transaction
             const metadata = {
                 action: 'create_task',
@@ -829,37 +862,37 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
                 dueDate,
                 ipfsHash
             };
-            
+
             // Gọi smart contract để tạo task
             let txHash = '';
             try {
                 // Gọi hàm createTask trên smart contract
                 const tx = await contract.createTask(title, description, ipfsHash || '');
-                
+
                 // Chờ transaction được confirm
                 const receipt = await tx.wait();
                 txHash = receipt.transactionHash;
-                
+
                 message.success('Transaction đã được xác nhận trên blockchain!');
             } catch (err) {
                 console.error('Lỗi blockchain transaction:', err);
                 message.error('Lỗi khi thực hiện giao dịch blockchain');
                 throw err;
             }
-            
+
             // Sau khi có transaction hash, gọi API để lưu task
-            const taskData = { 
-                title, 
-                description, 
-                priority, 
+            const taskData = {
+                title,
+                description,
+                priority,
                 dueDate,
                 ipfsHash,
                 txHash,
                 metadata: JSON.stringify(metadata)
             };
-            
+
             const result = await ApiService.createTask(taskData);
-            
+
             if (result.success) {
                 message.success('Tạo task thành công!');
                 await fetchTasks(); // Refresh danh sách task
@@ -880,35 +913,28 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const assignTask = async (taskId: string, assigneeAddress: string) => {
         try {
             setLoading(true);
-            
+
             // Kiểm tra kết nối
             if (!isConnected || !contract || !signer) {
-                throw new Error('Chưa kết nối với blockchain');
+                throw new Error('Chưa kết nối với MetaMask');
             }
-            
-            // Tạo metadata cho transaction
-            const metadata = {
-                action: 'assign_task',
+
+            // Kiểm tra quyền (chỉ TeamLead mới được gán task)
+            if (userRole !== 'teamLead') {
+                throw new Error('Chỉ Team Lead mới có quyền gán task');
+            }
+
+            // Gọi smart contract để gán task
+
+            // Lấy event từ transaction
+
+
+            // Gọi API để cập nhật trạng thái
+            const result = await ApiService.assignTask(
                 taskId,
-                assigneeAddress
-            };
-            
-            // Gọi hàm trên smart contract để gán task
-            let txHash = '';
-            try {
-                const tx = await contract.assignTask(taskId, assigneeAddress);
-                const receipt = await tx.wait();
-                txHash = receipt.transactionHash;
-                message.success('Transaction đã được xác nhận trên blockchain!');
-            } catch (err) {
-                console.error('Blockchain transaction error:', err);
-                message.error('Lỗi khi thực hiện giao dịch blockchain. Kiểm tra console để biết thêm chi tiết.');
-                // Vẫn tiếp tục gán task trên backend để tracking
-            }
-            
-            // Gọi API để gán task
-            const result = await ApiService.assignTask(taskId, assigneeAddress, txHash);
-            
+                assigneeAddress,
+            );
+
             if (result.success) {
                 message.success('Gán task thành công!');
                 await fetchTasks();
@@ -929,43 +955,31 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
     const updateTaskStatus = async (taskId: string, status: string) => {
         try {
             setLoading(true);
-            
+
             // Kiểm tra kết nối
             if (!isConnected || !contract || !signer) {
-                throw new Error('Chưa kết nối với blockchain');
+                throw new Error('Chưa kết nối với MetaMask');
             }
-            
-            // Tạo metadata cho transaction
-            const metadata = {
-                action: 'update_task_status',
+
+            // Chuyển đổi status sang enum
+            const statusEnum = {
+                'created': 0,
+                'assigned': 1,
+                'in_progress': 2,
+                'completed': 3,
+                'rejected': 4
+            }[status];
+
+            if (statusEnum === undefined) {
+                throw new Error('Trạng thái không hợp lệ');
+            }
+            // Gọi smart contract để cập nhật trạng thái
+
+            // Gọi API để cập nhật trạng thái
+            const result = await ApiService.updateTaskStatus(
                 taskId,
-                status
-            };
-            
-            // Gọi hàm trên smart contract để cập nhật trạng thái task
-            let txHash = '';
-            try {
-                // Chọn hàm contract phù hợp với trạng thái
-                let tx;
-                if (status === 'completed') {
-                    tx = await contract.completeTask(taskId);
-                } else {
-                    // Giả sử có hàm updateTaskStatus
-                    tx = await contract.updateTaskStatus(taskId, status);
-                }
-                
-                const receipt = await tx.wait();
-                txHash = receipt.transactionHash;
-                message.success('Transaction đã được xác nhận trên blockchain!');
-            } catch (err) {
-                console.error('Blockchain transaction error:', err);
-                message.error('Lỗi khi thực hiện giao dịch blockchain. Kiểm tra console để biết thêm chi tiết.');
-                // Vẫn tiếp tục cập nhật task trên backend để tracking
-            }
-            
-            // Gọi API để cập nhật trạng thái task
-            const result = await ApiService.updateTaskStatus(taskId, status, txHash);
-            
+                status,
+            );
             if (result.success) {
                 message.success('Cập nhật trạng thái task thành công!');
                 await fetchTasks();
@@ -975,7 +989,7 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
             }
         } catch (error) {
             console.error('Error updating task status:', error);
-            message.error('Lỗi cập nhật trạng thái task: ' + (error as Error).message);
+            message.error('Lỗi cập nhật trạng thái: ' + (error as Error).message);
             throw error;
         } finally {
             setLoading(false);
@@ -988,18 +1002,18 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
             if (window.ethereum) {
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
                 setProvider(provider);
-                
+
                 // Lắng nghe các events từ MetaMask
                 window.ethereum.on('accountsChanged', handleAccountsChanged);
                 window.ethereum.on('chainChanged', handleChainChanged);
-                
+
                 return () => {
                     window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
                     window.ethereum.removeListener('chainChanged', handleChainChanged);
                 };
             }
         };
-        
+
         initProvider();
     }, []);
 
@@ -1059,6 +1073,54 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
         }
     };
 
+    // Xóa task
+    const archiveTask = async (taskId: string) => {
+        try {
+            setLoading(true);
+
+            // Kiểm tra kết nối
+            if (!isConnected || !contract || !signer) {
+                throw new Error('Chưa kết nối với MetaMask');
+            }
+
+            // Kiểm tra quyền (chỉ Admin và người tạo task mới được xóa)
+            const task = await contract.tasks(taskId);
+            if (userRole !== 'admin' && task.createdBy !== walletAddress) {
+                throw new Error('Bạn không có quyền xóa task này');
+            }
+
+            // Gọi smart contract để archive task
+            const tx = await contract.archiveTask(taskId);
+            const receipt = await tx.wait();
+
+            // Lấy event từ transaction
+            const event = receipt.events?.find(
+                (event: any) => event.event === 'TaskArchived'
+            );
+
+            if (!event) {
+                throw new Error('Không thể xác nhận transaction');
+            }
+
+            // Gọi API để xóa task
+            const result = await ApiService.deleteTask(taskId, receipt.transactionHash);
+
+            if (result.success) {
+                message.success('Xóa task thành công!');
+                await fetchTasks();
+                return result.data;
+            } else {
+                throw new Error(result.message || 'Lỗi khi xóa task');
+            }
+        } catch (error) {
+            console.error('Error archiving task:', error);
+            message.error('Lỗi xóa task: ' + (error as Error).message);
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <BlockchainContext.Provider
             value={{
@@ -1085,7 +1147,8 @@ export const BlockchainProvider: React.FC<{ children: ReactNode }> = ({ children
                 handleAccountsChanged,
                 handleChainChanged,
                 logout,
-                deleteUser
+                deleteUser,
+                archiveTask
             }}
         >
             {children}

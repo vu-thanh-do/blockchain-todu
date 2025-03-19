@@ -93,6 +93,7 @@ export const createTask = async (req: Request, res: Response): Promise<void> => 
             txHash,
             metadata 
         } = req.body;
+        const taskId = `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
         // Tạo task mới
         const task = new Task({
@@ -101,8 +102,9 @@ export const createTask = async (req: Request, res: Response): Promise<void> => 
             priority,
             dueDate,
             ipfsHash,
-            createdBy: req.user.id,
-            status: 'created'
+            createdBy: req.user.walletAddress,
+            status: 'created',
+            taskId
         });
 
         // Lưu task

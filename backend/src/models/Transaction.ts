@@ -30,17 +30,13 @@ const TransactionSchema = new Schema<ITransaction>({
   },
   from: {
     type: String,
-    required: true,
     index: true
   },
   to: {
     type: String,
-    required: true,
-    index: true
   },
   value: {
     type: String,
-    required: true
   },
   timestamp: {
     type: Date,
@@ -54,7 +50,6 @@ const TransactionSchema = new Schema<ITransaction>({
   type: {
     type: String,
     enum: ['create_user', 'create_task', 'assign_task', 'update_task', 'archive_task', 'comment', 'other', 'metamask_login', 'metamask_connect'],
-    required: true
   },
   metadata: {
     userId: String,
@@ -75,7 +70,6 @@ const TransactionSchema = new Schema<ITransaction>({
   },
   action: {
     type: String,
-    required: true,
     enum: ['create_task', 'assign_task', 'update_status','metamask_login']
   }
 }, {
