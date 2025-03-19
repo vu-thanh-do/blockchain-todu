@@ -15,6 +15,7 @@ export interface ITask extends Document {
   blockchainTxHash?: string; // Hash của transaction trên blockchain
   createdAt: Date;
   updatedAt: Date;
+  progress: number;
 }
 
 // Schema cho Task
@@ -64,6 +65,12 @@ const TaskSchema: Schema = new Schema(
     },
     blockchainTxHash: {
       type: String
+    },
+    progress: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100
     }
   },
   {

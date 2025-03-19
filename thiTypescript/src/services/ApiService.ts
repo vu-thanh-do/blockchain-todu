@@ -323,4 +323,25 @@ export const verifySignature = async (
 export const checkWalletAddress = async (address: string) => {
   const response = await api.get(`/users/check-wallet/${address}`);
   return response.data;
+};
+
+export const updateTaskProgress = async (taskId: string, data: {
+  progress: number;
+  status: string;
+  comment: string;
+}) => {
+  try {
+    const response = await api.put(
+      `/tasks/${taskId}/progress`,
+      data,
+      {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 }; 

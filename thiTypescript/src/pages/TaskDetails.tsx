@@ -170,28 +170,20 @@ const TaskDetails: React.FC = () => {
     if (!task) return;
 
     try {
-      const result = await ApiService.updateTaskStatus(task.id, values.status);
+      const result = await ApiService.updateTaskProgress(task._id, {
+        progress: values.progress,
+        status: values.status,
+        comment: values.comment
+      });
       
       if (result.success) {
         setTask(result.data);
-
-        // Thêm vào lịch sử trạng thái
-        const newHistoryItem: StatusHistory = {
-          id: (statusHistory.length + 1).toString(),
-          status: values.status,
-          timestamp: new Date().toLocaleString(),
-          user: localStorage.getItem('username') || walletAddress || 'Người dùng',
-          comment: `Cập nhật tiến độ: ${values.progress}% - ${values.comment}`
-        };
-        setStatusHistory([...statusHistory, newHistoryItem]);
-
         message.success('Cập nhật tiến độ thành công');
         setUpdateModalVisible(false);
         form.resetFields();
         
-        // Refresh data
-        fetchTaskDetails(task.id);
-        fetchStatusHistory(task.id);
+        // Refresh task details
+        fetchTaskDetails(task._id);
       } else {
         throw new Error(result.message || 'Cập nhật không thành công');
       }
@@ -205,7 +197,7 @@ const TaskDetails: React.FC = () => {
     if (!task) return;
 
     try {
-      const result = await ApiService.updateTaskStatus(task.id, 'completed');
+      const result = await ApiService.updateTaskStatus(task._id, 'completed');
       
       if (result.success) {
         setTask(result.data);
@@ -225,8 +217,8 @@ const TaskDetails: React.FC = () => {
         completeForm.resetFields();
         
         // Refresh data
-        fetchTaskDetails(task.id);
-        fetchStatusHistory(task.id);
+        fetchTaskDetails(task._id);
+        fetchStatusHistory(task._id);
       } else {
         throw new Error(result.message || 'Cập nhật không thành công');
       }
@@ -240,14 +232,14 @@ const TaskDetails: React.FC = () => {
     if (!task) return;
     
     try {
-      const result = await ApiService.updateTaskStatus(task.id, 'in_progress');
+      const result = await ApiService.updateTaskStatus(task._id, 'in_progress');
       
       if (result.success) {
         message.success('Đã nhận task thành công');
         
         // Refresh data
-        fetchTaskDetails(task.id);
-        fetchStatusHistory(task.id);
+        fetchTaskDetails(task._id);
+        fetchStatusHistory(task._id);
       } else {
         throw new Error(result.message || 'Nhận task không thành công');
       }
@@ -495,6 +487,10 @@ const TaskDetails: React.FC = () => {
           form={form}
           layout="vertical"
           onFinish={handleUpdateProgress}
+          initialValues={{
+            progress: task?.progress || 0,
+            status: task?.status || 'in_progress'
+          }}
         >
           <Form.Item
             name="progress"
@@ -506,13 +502,7 @@ const TaskDetails: React.FC = () => {
               max={100} 
               style={{ width: '100%' }} 
               formatter={value => `${value}%`}
-              parser={(value) => {
-                const parsed = parseInt(value!.replace('%', ''), 10);
-                if (isNaN(parsed)) return 0;
-                if (parsed < 0) return 0;
-                if (parsed > 100) return 100;
-                return parsed;
-              }}
+              parser={value => value!.replace('%', '')}
             />
           </Form.Item>
 

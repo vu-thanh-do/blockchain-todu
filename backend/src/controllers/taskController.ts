@@ -332,3 +332,75 @@ export const updateTask = async (req: Request, res: Response) :Promise<any> => {
     });
   }
 };
+
+// @desc    Cập nhật tiến độ task
+// @route   PUT /api/tasks/:taskId/progress
+// @access  Private
+export const updateTaskProgress = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { taskId } = req.params;
+    const { progress, status, comment } = req.body;
+
+    // Kiểm tra task tồn tại
+    const task = await Task.findById(taskId);
+    if (!task) {
+      res.status(404).json({
+        success: false,
+        message: 'Không tìm thấy task'
+      });
+      return;
+    }
+
+    // Kiểm tra quyền: chỉ người được assign hoặc admin/teamLead mới được cập nhật
+    if (task.assignee !== req.user.walletAddress && 
+        !['admin', 'teamLead'].includes(req.user.role)) {
+      res.status(403).json({
+        success: false,
+        message: 'Không có quyền cập nhật task này'
+      });
+      return;
+    }
+
+    // Cập nhật task
+    task.progress = progress;
+    task.status = status;
+    task.updatedAt = new Date();
+
+    // Lưu transaction để theo dõi
+    const transaction = new Transaction({
+      txHash: `update_task_${Date.now()}_${task._id}`,
+      from: req.user.walletAddress,
+      to: process.env.CONTRACT_ADDRESS || 'system',
+      type: 'update_task',
+      status: 'success',
+      metadata: {
+        taskId: task._id,
+        progress,
+        status,
+        comment
+      },
+      action: 'update_status',
+      value: progress,
+    });
+
+    // Lưu thay đổi
+    await Promise.all([
+      task.save(),
+      transaction.save()
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: task,
+      message: 'Cập nhật tiến độ thành công'
+    });
+
+  } catch (error) {
+    console.error('Lỗi khi cập nhật tiến độ task:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi khi cập nhật tiến độ task',
+      error: (error as Error).message
+    });
+  }
+};

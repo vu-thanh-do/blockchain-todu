@@ -2,7 +2,7 @@ import express from 'express';
 
 import { getCommentsByTaskId, addComment } from '../controllers/commentController';
 import { protect, authorize } from '../middleware/auth';
-import { assignTask, createTask, getTaskById, getTasks, updateTask, updateTaskStatus } from '../controllers/taskController';
+import { assignTask, createTask, getTaskById, getTasks, updateTask, updateTaskStatus, updateTaskProgress } from '../controllers/taskController';
 
 const router = express.Router();
 
@@ -26,5 +26,7 @@ router.put('/:id/assign', authorize('admin', 'teamLead'), assignTask);
 router.route('/:taskId/comments')
   .get(getCommentsByTaskId)
   .post(addComment);
+
+router.put('/:taskId/progress', updateTaskProgress);
 
 export default router; 

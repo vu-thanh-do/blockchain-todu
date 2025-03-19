@@ -109,10 +109,10 @@ const TaskManagement: React.FC = () => {
     try {
       if (!currentTask) return;
       
-      setProcessingTaskId(currentTask.id);
+      setProcessingTaskId(currentTask._id);
 
       // Cập nhật thông tin task
-      await ApiService.updateTask(currentTask.id, {
+      await ApiService.updateTask(currentTask._id, {
         title: values.title,
         description: values.description,
         priority: values.priority,
@@ -121,7 +121,7 @@ const TaskManagement: React.FC = () => {
 
       // Nếu trạng thái thay đổi, cập nhật trạng thái
       if (values.status !== currentTask.status) {
-        await updateTaskStatus(currentTask.id, values.status);
+        await updateTaskStatus(currentTask._id, values.status);
       }
 
       await fetchTasks();
@@ -365,7 +365,7 @@ const TaskManagement: React.FC = () => {
 
       <Table
         columns={columns}
-        dataSource={filteredTasks.map(task => ({ ...task, key: task.id }))}
+        dataSource={filteredTasks.map(task => ({ ...task, key: task._id }))}
         loading={loading}
         pagination={{ pageSize: 10 }}
       />
