@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <title>Blockchain Task</title>
+  <rect width="32" height="32" rx="4" fill="#1890ff" />
+  <path d="M16,7 L24,12 L24,22 L16,27 L8,22 L8,12 L16,7 Z" fill="white" stroke="#fff" stroke-width="1" />
+  <path d="M16,13 L20,15.5 L20,20.5 L16,23 L12,20.5 L12,15.5 L16,13 Z" fill="#1890ff" stroke="#1890ff" stroke-width="0.5" />
+  <circle cx="16" cy="10" r="2" fill="#1890ff" />
+  <circle cx="22" cy="17" r="2" fill="#1890ff" />
+  <circle cx="16" cy="24" r="2" fill="#1890ff" />
+  <circle cx="10" cy="17" r="2" fill="#1890ff" />
+</svg> 
